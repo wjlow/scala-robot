@@ -14,11 +14,11 @@ object Robot {
 
   case object West extends Direction
 
-  def move(position: Position, direction: Direction): (Position, Direction) = {
+  def isValidPosition(position: Position) = {
+    (0 to 4 contains position.x) && (0 to 4 contains position.y)
+  }
 
-    def isValidPosition(position: Position) = {
-      (0 to 4 contains position.x) && (0 to 4 contains position.y)
-    }
+  def move(position: Position, direction: Direction): (Position, Direction) = {
 
     val nextPosition = direction match {
       case North => Position(position.x, position.y + 1)
@@ -47,6 +47,10 @@ object Robot {
       case South => West
       case West => North
     }
+  }
+
+  def place(currentPositionDirection: (Position, Direction), nextPosition: Position, nextDirection: Direction): (Position, Direction) = {
+    if (isValidPosition(nextPosition)) (nextPosition, nextDirection) else currentPositionDirection
   }
 
 }

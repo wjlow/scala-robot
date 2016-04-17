@@ -139,4 +139,18 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
 
   }
 
+  describe("place") {
+
+    it("should return next Position and next Direction if next Position is valid") {
+      val currentPositionDirection = (Position(0, 0), North)
+      place(currentPositionDirection, Position(2, 2), West) should ===((Position(2, 2), West))
+    }
+
+    it("should return current Position and current Direction if next Position is invalid") {
+      val currentPositionDirection = (Position(0, 0), North)
+      place(currentPositionDirection, Position(-1, -1), West) should ===(currentPositionDirection)
+    }
+
+  }
+
 }
