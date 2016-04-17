@@ -15,18 +15,18 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(3, 3)
         val direction = North
 
-        val (newPosition, newDirection) = Robot.move(position, direction)
-        newPosition should ===(Position(3, 4))
-        newDirection should ===(North)
+        val robot = Robot.move(position, direction)
+        robot.position should ===(Position(3, 4))
+        robot.direction should ===(North)
       }
 
       it("should do nothing if Position is on Northern edge") {
         val position = Position(3, 4)
         val direction = North
 
-        val (newPosition, newDirection) = Robot.move(position, direction)
-        newPosition should ===(position)
-        newDirection should ===(direction)
+        val robot = Robot.move(position, direction)
+        robot.position should ===(position)
+        robot.direction should ===(direction)
       }
 
     }
@@ -37,18 +37,18 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(3, 3)
         val direction = South
 
-        val (newPosition, newDirection) = Robot.move(position, direction)
-        newPosition should ===(Position(3, 2))
-        newDirection should ===(South)
+        val robot = Robot.move(position, direction)
+        robot.position should ===(Position(3, 2))
+        robot.direction should ===(South)
       }
 
       it("should do nothing if Position is on Southern edge") {
         val position = Position(3, 0)
         val direction = South
 
-        val (newPosition, newDirection) = Robot.move(position, direction)
-        newPosition should ===(position)
-        newDirection should ===(direction)
+        val robot = Robot.move(position, direction)
+        robot.position should ===(position)
+        robot.direction should ===(direction)
       }
 
     }
@@ -59,20 +59,19 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(3, 3)
         val direction = East
 
-        val (newPosition, newDirection) = Robot.move(position, direction)
-        newPosition should ===(Position(4, 3))
-        newDirection should ===(East)
+        val robot = Robot.move(position, direction)
+        robot.position should ===(Position(4, 3))
+        robot.direction should ===(East)
       }
 
       it("should do nothing if Position is on Eastern edge") {
         val position = Position(4, 3)
         val direction = East
 
-        val (newPosition, newDirection) = Robot.move(position, direction)
-        newPosition should ===(position)
-        newDirection should ===(direction)
+        val robot = Robot.move(position, direction)
+        robot.position should ===(position)
+        robot.direction should ===(direction)
       }
-
     }
 
     describe("when facing West") {
@@ -81,18 +80,18 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(3, 3)
         val direction = West
 
-        val (newPosition, newDirection) = Robot.move(position, direction)
-        newPosition should ===(Position(2, 3))
-        newDirection should ===(West)
+        val robot = Robot.move(position, direction)
+        robot.position should ===(Position(2, 3))
+        robot.direction should ===(West)
       }
 
       it("should do nothing if Position is on Western edge") {
         val position = Position(0, 3)
         val direction = West
 
-        val (newPosition, newDirection) = Robot.move(position, direction)
-        newPosition should ===(position)
-        newDirection should ===(direction)
+        val robot = Robot.move(position, direction)
+        robot.position should ===(position)
+        robot.direction should ===(direction)
       }
 
     }
@@ -142,12 +141,12 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
   describe("place") {
 
     it("should return next Position and next Direction if next Position is valid") {
-      val currentPositionDirection = (Position(0, 0), North)
-      place(currentPositionDirection, Position(2, 2), West) should ===((Position(2, 2), West))
+      val currentPositionDirection = ToyRobot(Position(0, 0), North)
+      place(currentPositionDirection, Position(2, 2), West) should ===(ToyRobot(Position(2, 2), West))
     }
 
     it("should return current Position and current Direction if next Position is invalid") {
-      val currentPositionDirection = (Position(0, 0), North)
+      val currentPositionDirection = ToyRobot(Position(0, 0), North)
       place(currentPositionDirection, Position(-1, -1), West) should ===(currentPositionDirection)
     }
 
