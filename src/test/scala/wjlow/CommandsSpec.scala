@@ -2,10 +2,10 @@ package scala.wjlow
 
 import org.scalactic.TypeCheckedTripleEquals
 import org.scalatest.{FunSpec, Matchers}
-import wjlow.Robot
+import wjlow.Commands._
 import wjlow.Robot._
 
-class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
+class CommandsSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
 
   describe("move") {
 
@@ -15,7 +15,7 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(3, 3)
         val direction = North
 
-        val robot = Robot.move(position, direction)
+        val robot = move(position, direction)
         robot.position should ===(Position(3, 4))
         robot.direction should ===(North)
       }
@@ -24,7 +24,7 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(3, 4)
         val direction = North
 
-        val robot = Robot.move(position, direction)
+        val robot = move(position, direction)
         robot.position should ===(position)
         robot.direction should ===(direction)
       }
@@ -37,7 +37,7 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(3, 3)
         val direction = South
 
-        val robot = Robot.move(position, direction)
+        val robot = move(position, direction)
         robot.position should ===(Position(3, 2))
         robot.direction should ===(South)
       }
@@ -46,7 +46,7 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(3, 0)
         val direction = South
 
-        val robot = Robot.move(position, direction)
+        val robot = move(position, direction)
         robot.position should ===(position)
         robot.direction should ===(direction)
       }
@@ -59,7 +59,7 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(3, 3)
         val direction = East
 
-        val robot = Robot.move(position, direction)
+        val robot = move(position, direction)
         robot.position should ===(Position(4, 3))
         robot.direction should ===(East)
       }
@@ -68,7 +68,7 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(4, 3)
         val direction = East
 
-        val robot = Robot.move(position, direction)
+        val robot = move(position, direction)
         robot.position should ===(position)
         robot.direction should ===(direction)
       }
@@ -80,7 +80,7 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(3, 3)
         val direction = West
 
-        val robot = Robot.move(position, direction)
+        val robot = move(position, direction)
         robot.position should ===(Position(2, 3))
         robot.direction should ===(West)
       }
@@ -89,7 +89,7 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
         val position = Position(0, 3)
         val direction = West
 
-        val robot = Robot.move(position, direction)
+        val robot = move(position, direction)
         robot.position should ===(position)
         robot.direction should ===(direction)
       }
