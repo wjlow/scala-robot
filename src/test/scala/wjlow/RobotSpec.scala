@@ -98,4 +98,45 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
     }
 
   }
+
+  describe("left") {
+
+    it("should change Direction from North to West") {
+      left(North) should ===(West)
+    }
+
+    it("should change Direction from West to South") {
+      left(West) should ===(South)
+    }
+
+    it("should change Direction from South to East") {
+      left(South) should ===(East)
+    }
+
+    it("should change Direction from East to North") {
+      left(East) should ===(North)
+    }
+
+  }
+
+  describe("right") {
+
+    it("should change Direction from North to East") {
+      right(North) should ===(East)
+    }
+
+    it("should change Direction from East to South") {
+      right(East) should ===(South)
+    }
+
+    it("should change Direction from South to West") {
+      right(South) should ===(West)
+    }
+
+    it("should change Direction from West to North") {
+      right(West) should ===(North)
+    }
+
+  }
+
 }

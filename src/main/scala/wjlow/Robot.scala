@@ -31,4 +31,22 @@ object Robot {
 
   }
 
+  def left(direction: Direction): Direction = {
+    direction match {
+      case North => West
+      case West => South
+      case South => East
+      case East => North
+    }
+  }
+
+  def right(direction: Direction): Direction = {
+    direction match {
+      case North => East
+      case East => South
+      case South => West
+      case West => North
+    }
+  }
+
 }
