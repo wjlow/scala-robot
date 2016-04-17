@@ -23,22 +23,24 @@ object Commands {
 
   }
 
-  def left(direction: Direction): Direction = {
-    direction match {
+  def left(robot: ToyRobot): ToyRobot = {
+    val nextDirection = robot.direction match {
       case North => West
       case West => South
       case South => East
       case East => North
     }
+    ToyRobot(robot.position, nextDirection)
   }
 
-  def right(direction: Direction): Direction = {
-    direction match {
+  def right(robot: ToyRobot): ToyRobot = {
+    val nextDirection = robot.direction match {
       case North => East
       case East => South
       case South => West
       case West => North
     }
+    ToyRobot(robot.position, nextDirection)
   }
 
   def place(currentPositionDirection: ToyRobot, nextPosition: Position, nextDirection: Direction): ToyRobot = {

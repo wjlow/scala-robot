@@ -85,19 +85,35 @@ class CommandsSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
   describe("left") {
 
     it("should change Direction from North to West") {
-      left(North) should ===(West)
+      val oldRobot = ToyRobot(Position(0, 0), North)
+
+      val newRobot = left(oldRobot)
+      newRobot.position should ===(oldRobot.position)
+      newRobot.direction should ===(West)
     }
 
     it("should change Direction from West to South") {
-      left(West) should ===(South)
+      val oldRobot = ToyRobot(Position(0, 0), West)
+
+      val newRobot = left(oldRobot)
+      newRobot.position should ===(oldRobot.position)
+      newRobot.direction should ===(South)
     }
 
     it("should change Direction from South to East") {
-      left(South) should ===(East)
+      val oldRobot = ToyRobot(Position(0, 0), South)
+
+      val newRobot = left(oldRobot)
+      newRobot.position should ===(oldRobot.position)
+      newRobot.direction should ===(East)
     }
 
     it("should change Direction from East to North") {
-      left(East) should ===(North)
+      val oldRobot = ToyRobot(Position(0, 0), East)
+
+      val newRobot = left(oldRobot)
+      newRobot.position should ===(oldRobot.position)
+      newRobot.direction should ===(North)
     }
 
   }
@@ -105,19 +121,35 @@ class CommandsSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
   describe("right") {
 
     it("should change Direction from North to East") {
-      right(North) should ===(East)
+      val oldRobot = ToyRobot(Position(0, 0), North)
+
+      val newRobot = right(oldRobot)
+      newRobot.position should ===(oldRobot.position)
+      newRobot.direction should ===(East)
     }
 
     it("should change Direction from East to South") {
-      right(East) should ===(South)
+      val oldRobot = ToyRobot(Position(0, 0), East)
+
+      val newRobot = right(oldRobot)
+      newRobot.position should ===(oldRobot.position)
+      newRobot.direction should ===(South)
     }
 
     it("should change Direction from South to West") {
-      right(South) should ===(West)
+      val oldRobot = ToyRobot(Position(0, 0), South)
+
+      val newRobot = right(oldRobot)
+      newRobot.position should ===(oldRobot.position)
+      newRobot.direction should ===(West)
     }
 
     it("should change Direction from West to North") {
-      right(West) should ===(North)
+      val oldRobot = ToyRobot(Position(0, 0), West)
+
+      val newRobot = right(oldRobot)
+      newRobot.position should ===(oldRobot.position)
+      newRobot.direction should ===(North)
     }
 
   }
