@@ -12,21 +12,17 @@ class CommandsSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
     describe("when facing North") {
 
       it("should increment Y-coordinate and face North") {
-        val position = Position(3, 3)
-        val direction = North
+        val oldRobot = ToyRobot(Position(3, 3), North)
 
-        val robot = move(position, direction)
-        robot.position should ===(Position(3, 4))
-        robot.direction should ===(North)
+        val newRobot = move(oldRobot)
+        newRobot.position should ===(Position(3, 4))
+        newRobot.direction should ===(North)
       }
 
       it("should do nothing if Position is on Northern edge") {
-        val position = Position(3, 4)
-        val direction = North
-
-        val robot = move(position, direction)
-        robot.position should ===(position)
-        robot.direction should ===(direction)
+        val oldRobot = ToyRobot(Position(3, 4), North)
+        val newRobot = move(oldRobot)
+        newRobot should ===(oldRobot)
       }
 
     }
@@ -34,21 +30,17 @@ class CommandsSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
     describe("when facing South") {
 
       it("should decrement Y-coordinate and face South") {
-        val position = Position(3, 3)
-        val direction = South
+        val oldRobot = ToyRobot(Position(3, 3), South)
 
-        val robot = move(position, direction)
-        robot.position should ===(Position(3, 2))
-        robot.direction should ===(South)
+        val newRobot = move(oldRobot)
+        newRobot.position should ===(Position(3, 2))
+        newRobot.direction should ===(South)
       }
 
       it("should do nothing if Position is on Southern edge") {
-        val position = Position(3, 0)
-        val direction = South
-
-        val robot = move(position, direction)
-        robot.position should ===(position)
-        robot.direction should ===(direction)
+        val oldRobot = ToyRobot(Position(3, 0), South)
+        val newRobot = move(oldRobot)
+        newRobot should ===(oldRobot)
       }
 
     }
@@ -56,42 +48,34 @@ class CommandsSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
     describe("when facing East") {
 
       it("should increment X-coordinate and face East") {
-        val position = Position(3, 3)
-        val direction = East
+        val oldRobot = ToyRobot(Position(3, 3), East)
 
-        val robot = move(position, direction)
-        robot.position should ===(Position(4, 3))
-        robot.direction should ===(East)
+        val newRobot = move(oldRobot)
+        newRobot.position should ===(Position(4, 3))
+        newRobot.direction should ===(East)
       }
 
       it("should do nothing if Position is on Eastern edge") {
-        val position = Position(4, 3)
-        val direction = East
-
-        val robot = move(position, direction)
-        robot.position should ===(position)
-        robot.direction should ===(direction)
+        val oldRobot = ToyRobot(Position(4, 3), East)
+        val newRobot = move(oldRobot)
+        newRobot should ===(oldRobot)
       }
     }
 
     describe("when facing West") {
 
       it("should decrement X-coordinate and face West") {
-        val position = Position(3, 3)
-        val direction = West
+        val oldRobot = ToyRobot(Position(3, 3), West)
 
-        val robot = move(position, direction)
-        robot.position should ===(Position(2, 3))
-        robot.direction should ===(West)
+        val newRobot = move(oldRobot)
+        newRobot.position should ===(Position(2, 3))
+        newRobot.direction should ===(West)
       }
 
       it("should do nothing if Position is on Western edge") {
-        val position = Position(0, 3)
-        val direction = West
-
-        val robot = move(position, direction)
-        robot.position should ===(position)
-        robot.direction should ===(direction)
+        val oldRobot = ToyRobot(Position(0, 3), West)
+        val newRobot = move(oldRobot)
+        newRobot should ===(oldRobot)
       }
 
     }

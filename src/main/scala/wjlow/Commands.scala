@@ -8,7 +8,9 @@ object Commands {
     (0 to 4 contains position.x) && (0 to 4 contains position.y)
   }
 
-  def move(position: Position, direction: Direction): ToyRobot = {
+  def move(robot: ToyRobot): ToyRobot = {
+    val position = robot.position
+    val direction = robot.direction
 
     val nextPosition = direction match {
       case North => Position(position.x, position.y + 1)
