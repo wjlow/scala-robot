@@ -47,4 +47,9 @@ object Commands {
     if (isValidPosition(nextPosition)) ToyRobot(nextPosition, nextDirection) else currentPositionDirection
   }
 
+  def applyAll(robot: ToyRobot, commands: Seq[ToyRobot => ToyRobot]): ToyRobot = {
+    val composedCommands = commands.reduce((f, g) => f andThen g)
+    composedCommands(robot)
+  }
+
 }

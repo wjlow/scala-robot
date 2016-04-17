@@ -168,4 +168,17 @@ class CommandsSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
 
   }
 
+  describe("applyAll") {
+
+    it("should apply Commands to Robot in sequence") {
+      val oldRobot = ToyRobot(Position(2, 2), East)
+      val commands = Seq(move(_), left(_), move(_), right(_), move(_), place(Position(4, 4), South)(_), move(_), move(_))
+
+      val newRobot = applyAll(oldRobot, commands)
+      newRobot.position should ===(Position(4, 2))
+      newRobot.direction should ===(South)
+    }
+
+  }
+
 }
