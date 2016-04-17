@@ -158,12 +158,12 @@ class CommandsSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
 
     it("should return next Position and next Direction if next Position is valid") {
       val currentPositionDirection = ToyRobot(Position(0, 0), North)
-      place(currentPositionDirection, Position(2, 2), West) should ===(ToyRobot(Position(2, 2), West))
+      place(Position(2, 2), West)(currentPositionDirection) should ===(ToyRobot(Position(2, 2), West))
     }
 
     it("should return current Position and current Direction if next Position is invalid") {
       val currentPositionDirection = ToyRobot(Position(0, 0), North)
-      place(currentPositionDirection, Position(-1, -1), West) should ===(currentPositionDirection)
+      place(Position(-1, -1), West)(currentPositionDirection) should ===(currentPositionDirection)
     }
 
   }

@@ -43,7 +43,7 @@ object Commands {
     ToyRobot(robot.position, nextDirection)
   }
 
-  def place(currentPositionDirection: ToyRobot, nextPosition: Position, nextDirection: Direction): ToyRobot = {
+  def place(nextPosition: Position, nextDirection: Direction)(currentPositionDirection: ToyRobot): ToyRobot = {
     if (isValidPosition(nextPosition)) ToyRobot(nextPosition, nextDirection) else currentPositionDirection
   }
 
