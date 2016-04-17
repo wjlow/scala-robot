@@ -14,13 +14,13 @@ object Parser {
     lineSplit(0) match {
       case "PLACE" =>
         val positionDirectionSplit = lineSplit(1).split(",")
-        val position = Position(positionDirectionSplit(0).toInt, positionDirectionSplit(1).toInt)
+        val throwableOrPosition = \/.fromTryCatchNonFatal(Position(positionDirectionSplit(0).toInt, positionDirectionSplit(1).toInt))
         val maybeDirection = parseDirection(positionDirectionSplit(2))
 
-        maybeDirection match {
-          case Some(direction) => \/-(ToyRobot(position, direction))
-          case None => -\/("Invalid Direction provided.")
-        }
+        maybeDirection map (direction =>
+          throwableOrPosition map (position => ToyRobot(position, direction)) leftMap (_ => "Invalid Position provided.")
+          ) getOrElse -\/("Invalid Direction provided.")
+
       case _ => -\/("Invalid PLACE command.")
     }
   }

@@ -23,13 +23,25 @@ class ParserSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with
     it("should return ErrorMessage for invalid PLACE command") {
       val errorOrRobot = parsePlace("BAD COMMAND")
       errorOrRobot.isLeft should ===(true)
-      errorOrRobot.swap foreach(errorMessage => errorMessage should ===("Invalid PLACE command."))
+      errorOrRobot.swap foreach (errorMessage => errorMessage should ===("Invalid PLACE command."))
     }
 
     it("should return ErrorMessage for invalid Direction") {
       val errorOrRobot = parsePlace("PLACE 1,2,INVALIDDIRECTION")
       errorOrRobot.isLeft should ===(true)
-      errorOrRobot.swap foreach(errorMessage => errorMessage should ===("Invalid Direction provided."))
+      errorOrRobot.swap foreach (errorMessage => errorMessage should ===("Invalid Direction provided."))
+    }
+
+    it("should return ErrorMessage for invalid X-coordinate") {
+      val errorOrRobot = parsePlace("PLACE INVALID,Y,SOUTH")
+      errorOrRobot.isLeft should ===(true)
+      errorOrRobot.swap foreach (errorMessage => errorMessage should ===("Invalid Position provided."))
+    }
+
+    it("should return ErrorMessage for invalid Y-coordinate") {
+      val errorOrRobot = parsePlace("PLACE X,INVALID,SOUTH")
+      errorOrRobot.isLeft should ===(true)
+      errorOrRobot.swap foreach (errorMessage => errorMessage should ===("Invalid Position provided."))
     }
 
   }
