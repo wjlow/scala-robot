@@ -26,7 +26,7 @@ object Parser {
   def parsePosition(x: String, y: String): Option[Position] = {
     for {
       position <- \/.fromTryCatchNonFatal(Position(x.toInt, y.toInt)).toOption
-      if isValidPosition(position)
+      if Table.isValidPosition(position)
     } yield position
   }
 

@@ -4,10 +4,6 @@ import wjlow.Robot._
 
 object Commands {
 
-  def isValidPosition(position: Position) = {
-    (0 to 4 contains position.x) && (0 to 4 contains position.y)
-  }
-
   def move(robot: ToyRobot): ToyRobot = {
     val position = robot.position
     val direction = robot.direction
@@ -19,8 +15,7 @@ object Commands {
       case West => Position(position.x - 1, position.y)
     }
 
-    if (isValidPosition(nextPosition)) ToyRobot(nextPosition, direction) else ToyRobot(position, direction)
-
+    place(nextPosition, direction)(robot)
   }
 
   def left(robot: ToyRobot): ToyRobot = {
@@ -44,7 +39,7 @@ object Commands {
   }
 
   def place(nextPosition: Position, nextDirection: Direction)(currentPositionDirection: ToyRobot): ToyRobot = {
-    if (isValidPosition(nextPosition)) ToyRobot(nextPosition, nextDirection) else currentPositionDirection
+    if (Table.isValidPosition(nextPosition)) ToyRobot(nextPosition, nextDirection) else currentPositionDirection
   }
 
   def applyAll(robot: ToyRobot, commands: Seq[ToyRobot => ToyRobot]): ToyRobot = {
