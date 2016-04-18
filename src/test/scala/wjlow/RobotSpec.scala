@@ -16,12 +16,12 @@ class RobotSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with 
       }
     }
 
-    it("should give a String representation of a ToyRobot") {
+    it("should give a String representation of a ToyRobot in caps") {
 
       implicit val genDirection: Arbitrary[Direction] = Arbitrary(Gen.oneOf(Seq(North, South, East, West)))
 
       forAll { (x: Int, y: Int, direction: Direction) =>
-        ToyRobot(Position(x, y), direction).toString should ===(s"$x,$y,$direction")
+        ToyRobot(Position(x, y), direction).toString should ===(s"$x,$y,${direction.toString.toUpperCase}")
       }
 
     }

@@ -13,7 +13,7 @@ object Robot {
   case object West extends Direction
 
   case class ToyRobot(position: Position, direction: Direction) {
-    override def toString = s"${position.x},${position.y},$direction"
+    override def toString = s"${position.x},${position.y},${direction.toString.toUpperCase}"
   }
 
 }
