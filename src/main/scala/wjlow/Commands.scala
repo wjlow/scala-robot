@@ -48,7 +48,7 @@ object Commands {
   }
 
   def applyAll(robot: ToyRobot, commands: Seq[ToyRobot => ToyRobot]): ToyRobot = {
-    val composedCommands = commands.reduce((f, g) => f andThen g)
+    val composedCommands = (commands foldLeft(identity: ToyRobot => ToyRobot))((f, g) => f andThen g)
     composedCommands(robot)
   }
 

@@ -179,6 +179,14 @@ class CommandsSpec extends FunSpec with TypeCheckedTripleEquals with Matchers {
       newRobot.direction should ===(South)
     }
 
+    it("should do nothing to Robot if Commands is Empty") {
+      val oldRobot = ToyRobot(Position(2, 2), East)
+      val commands = Nil
+
+      val newRobot = applyAll(oldRobot, commands)
+      newRobot should ===(oldRobot)
+    }
+
   }
 
 }
