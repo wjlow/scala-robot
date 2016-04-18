@@ -9,15 +9,19 @@ object Main {
   case class ProgramState(robot: Option[ToyRobot], commands: Seq[ToyRobot => ToyRobot], outputToPrint: Option[String])
 
   def main(args: Array[String]): Unit = {
-    var currentRobot = None: Option[ToyRobot]
-    var currentCommands = Nil: Seq[ToyRobot => ToyRobot]
+    if (args.length > 0) {
 
-    for (line <- io.Source.fromFile(args(0)).getLines()) {
-      val programState = robotProgram(line)(ProgramState(currentRobot, currentCommands, None))
-      currentRobot = programState.robot
-      currentCommands = programState.commands
-      programState.outputToPrint foreach println
-    }
+      var currentRobot = None: Option[ToyRobot]
+      var currentCommands = Nil: Seq[ToyRobot => ToyRobot]
+
+      for (line <- io.Source.fromFile(args(0)).getLines()) {
+        val programState = robotProgram(line)(ProgramState(currentRobot, currentCommands, None))
+        currentRobot = programState.robot
+        currentCommands = programState.commands
+        programState.outputToPrint foreach println
+      }
+
+    } else println("Example usage: sbt \"run src/main/resources/input1.txt\"")
   }
 
   def robotProgram(line: String)(programState: ProgramState): ProgramState = {
