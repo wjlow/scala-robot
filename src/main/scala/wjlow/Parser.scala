@@ -3,7 +3,7 @@ package wjlow
 import wjlow.Commands._
 import wjlow.Robot._
 
-import scalaz._
+import scala.util.Try
 
 object Parser {
 
@@ -25,7 +25,7 @@ object Parser {
 
   def parsePosition(x: String, y: String): Option[Position] = {
     for {
-      position <- \/.fromTryCatchNonFatal(Position(x.toInt, y.toInt)).toOption
+      position <- Try(Position(x.toInt, y.toInt)).toOption
       if Table.isValidPosition(position)
     } yield position
   }
