@@ -7,19 +7,10 @@ import scalaz._
 
 object Parser {
 
-  type ErrorMessage = String
+  case class PositionDirection(position: Position, direction: Direction)
 
-  case class ParsedPositionDirection(errorMessageOrPosition: \/[ErrorMessage, Position], maybeDirection: Option[Direction])
-
-  def parsePlace(line: String): \/[ErrorMessage, ToyRobot] = {
-    val parsed = parsePositionDirection(line)
-    parsed.errorMessageOrPosition match {
-      case \/-(position) =>
-        parsed.maybeDirection map (direction =>
-          parsed.errorMessageOrPosition map (position => ToyRobot(position, direction)) leftMap (_ => "Invalid Position provided.")
-          ) getOrElse -\/("Invalid Direction provided.")
-      case -\/(errorMessage) => -\/(errorMessage)
-    }
+  def parsePlace(line: String): Option[ToyRobot] = {
+    parsePositionDirection(line) map (positionDirection => ToyRobot(positionDirection.position, positionDirection.direction))
   }
 
   def parseDirection(direction: String): Option[Direction] = {
@@ -32,40 +23,35 @@ object Parser {
     }
   }
 
+  def parsePosition(x: String, y: String): Option[Position] = {
+    for {
+      position <- \/.fromTryCatchNonFatal(Position(x.toInt, y.toInt)).toOption
+      if isValidPosition(position)
+    } yield position
+  }
+
   def parseCommand(command: String): ToyRobot => ToyRobot = {
     command match {
       case "MOVE" => move
       case "LEFT" => left
       case "RIGHT" => right
       case str =>
-        val parsed = parsePositionDirection(str)
-        val parsedCommand = {
-          for {
-            position <- parsed.errorMessageOrPosition.toOption
-            direction <- parsed.maybeDirection
-          } yield place(position, direction)(_)
-        } getOrElse identity: ToyRobot => ToyRobot
-        parsedCommand
+        parsePositionDirection(str) map
+          (positionDirection => place(positionDirection.position, positionDirection.direction)(_)) getOrElse
+          (identity: ToyRobot => ToyRobot)
     }
   }
 
-  private def parsePositionDirection(line: String): ParsedPositionDirection = {
+  private def parsePositionDirection(line: String): Option[PositionDirection] = {
     val lineSplit = line.split("\\s+")
     lineSplit(0) match {
       case "PLACE" =>
         val positionDirectionSplit = lineSplit(1).split(",")
-        val throwableOrPosition = \/.fromTryCatchNonFatal(Position(positionDirectionSplit(0).toInt, positionDirectionSplit(1).toInt))
-        val errorMessageOrPosition = throwableOrPosition leftMap (_ => "Invalid Position provided.")
-        val errorMessageOrValidPosition = errorMessageOrPosition flatMap (position =>
-          if (isValidPosition(position))
-            \/-(position)
-           else
-            -\/("Position must be inside 5x5 grid.")
-          )
-
-        val maybeDirection = parseDirection(positionDirectionSplit(2))
-        ParsedPositionDirection(errorMessageOrValidPosition, maybeDirection)
-      case _ => ParsedPositionDirection(-\/("Invalid PLACE command."), None)
+        for {
+          position <- parsePosition(positionDirectionSplit(0), positionDirectionSplit(1))
+          direction <- parseDirection(positionDirectionSplit(2))
+        } yield PositionDirection(position, direction)
+      case _ => None
     }
   }
 

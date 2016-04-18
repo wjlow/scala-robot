@@ -12,42 +12,37 @@ class ParserSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with
   describe("parsePlace") {
 
     it("should return ToyRobot for valid PLACE command") {
-      val errorOrRobot = parsePlace("PLACE 1,2,NORTH")
-      errorOrRobot.isRight should ===(true)
-      errorOrRobot foreach (robot => {
+      val maybeRobot = parsePlace("PLACE 1,2,NORTH")
+      maybeRobot.isDefined should ===(true)
+      maybeRobot foreach (robot => {
         robot.position should ===(Position(1, 2))
         robot.direction should ===(North)
       })
     }
 
-    it("should return ErrorMessage for invalid coordinates") {
-      val errorOrRobot = parsePlace("PLACE 5,5,NORTH")
-      errorOrRobot.isLeft should ===(true)
-      errorOrRobot.swap foreach (errorMessage => errorMessage should ===("Position must be inside 5x5 grid."))
+    it("should return None for invalid Position") {
+      val maybeRobot = parsePlace("PLACE 5,5,NORTH")
+      maybeRobot.isEmpty should ===(true)
     }
 
-    it("should return ErrorMessage for invalid PLACE command") {
-      val errorOrRobot = parsePlace("BAD COMMAND")
-      errorOrRobot.isLeft should ===(true)
-      errorOrRobot.swap foreach (errorMessage => errorMessage should ===("Invalid PLACE command."))
+    it("should return None for invalid PLACE command") {
+      val maybeRobot = parsePlace("BAD COMMAND")
+      maybeRobot.isEmpty should ===(true)
     }
 
-    it("should return ErrorMessage for invalid Direction") {
-      val errorOrRobot = parsePlace("PLACE 1,2,INVALIDDIRECTION")
-      errorOrRobot.isLeft should ===(true)
-      errorOrRobot.swap foreach (errorMessage => errorMessage should ===("Invalid Direction provided."))
+    it("should return None for invalid Direction") {
+      val maybeRobot = parsePlace("PLACE 1,2,INVALIDDIRECTION")
+      maybeRobot.isEmpty should ===(true)
     }
 
-    it("should return ErrorMessage for invalid X-coordinate") {
-      val errorOrRobot = parsePlace("PLACE INVALID,Y,SOUTH")
-      errorOrRobot.isLeft should ===(true)
-      errorOrRobot.swap foreach (errorMessage => errorMessage should ===("Invalid Position provided."))
+    it("should return None for invalid X-coordinate") {
+      val maybeRobot = parsePlace("PLACE INVALID,Y,SOUTH")
+      maybeRobot.isEmpty should ===(true)
     }
 
-    it("should return ErrorMessage for invalid Y-coordinate") {
-      val errorOrRobot = parsePlace("PLACE X,INVALID,SOUTH")
-      errorOrRobot.isLeft should ===(true)
-      errorOrRobot.swap foreach (errorMessage => errorMessage should ===("Invalid Position provided."))
+    it("should return None for invalid Y-coordinate") {
+      val maybeRobot = parsePlace("PLACE X,INVALID,SOUTH")
+      maybeRobot.isEmpty should ===(true)
     }
 
   }
@@ -67,6 +62,34 @@ class ParserSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with
 
     it("should return None if not a valid Direction") {
       parseDirection("INVALID") should ===(None)
+    }
+
+  }
+
+  describe("parsePosition") {
+
+    it("should return Some Position") {
+      val zeroToFour = for (n <- Gen.choose(0, 4)) yield n
+
+      forAll(zeroToFour, zeroToFour) { (x: Int, y: Int) =>
+        val maybePosition = parsePosition(x.toString, y.toString)
+        maybePosition should ===(Some(Position(x, y)))
+      }
+    }
+
+    it("should return None if not a valid Position") {
+      val maybePosition = parsePosition("5", "5")
+      maybePosition should ===(None)
+    }
+
+    it("should return None if X cannot be converted to Int") {
+      val maybePosition = parsePosition("INVALID-X", "1")
+      maybePosition should ===(None)
+    }
+
+    it("should return None if Y cannot be converted to Int") {
+      val maybePosition = parsePosition("1", "INVALID-Y")
+      maybePosition should ===(None)
     }
 
   }
@@ -124,7 +147,6 @@ class ParserSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with
       val newRobot = parseCommand("UNKNOWN COMMAND")(oldRobot)
       newRobot should ===(oldRobot)
     }
-
 
   }
 
