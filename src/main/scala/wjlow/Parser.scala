@@ -44,15 +44,17 @@ object Parser {
 
   private def parsePositionDirection(line: String): Option[PositionDirection] = {
     val lineSplit = line.split("\\s+")
-    lineSplit(0) match {
-      case "PLACE" =>
-        val positionDirectionSplit = lineSplit(1).split(",")
-        for {
-          position <- parsePosition(positionDirectionSplit(0), positionDirectionSplit(1))
-          direction <- parseDirection(positionDirectionSplit(2))
-        } yield PositionDirection(position, direction)
-      case _ => None
-    }
+    if (lineSplit.nonEmpty) {
+      lineSplit(0) match {
+        case "PLACE" =>
+          val positionDirectionSplit = lineSplit(1).split(",")
+          for {
+            position <- parsePosition(positionDirectionSplit(0), positionDirectionSplit(1))
+            direction <- parseDirection(positionDirectionSplit(2))
+          } yield PositionDirection(position, direction)
+        case _ => None
+      }
+    } else None
   }
 
 }

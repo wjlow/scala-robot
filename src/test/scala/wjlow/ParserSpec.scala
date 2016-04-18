@@ -45,6 +45,11 @@ class ParserSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with
       maybeRobot.isEmpty should ===(true)
     }
 
+    it("should return None for blank input") {
+      val maybeRobot = parsePlace(" ")
+      maybeRobot.isEmpty should ===(true)
+    }
+
   }
 
   describe("parseDirection") {
@@ -145,6 +150,12 @@ class ParserSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with
     it("should convert unknown Command to Identity Command that does nothing to a ToyRobot") {
       val oldRobot = ToyRobot(Position(0, 0), North)
       val newRobot = parseCommand("UNKNOWN COMMAND")(oldRobot)
+      newRobot should ===(oldRobot)
+    }
+
+    it("should convert blank Command to Identity Command that does nothing to a ToyRobot") {
+      val oldRobot = ToyRobot(Position(0, 0), North)
+      val newRobot = parseCommand(" ")(oldRobot)
       newRobot should ===(oldRobot)
     }
 
