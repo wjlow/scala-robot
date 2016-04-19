@@ -9,15 +9,23 @@ import wjlow.Robot._
 
 class ParserSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with PropertyChecks {
 
+  val validPositionGen = Gen.choose(0, 4)
+  val invalidPositionGen = Gen.oneOf(Gen.choose(5, 100), Gen.negNum[Int])
+  val directionGen = Gen.oneOf(Seq(North, South, East, West))
+  implicit val arbitraryDirection: Arbitrary[Direction] = Arbitrary(directionGen)
+
   describe("parsePlace") {
 
     it("should return ToyRobot for valid PLACE command") {
-      val maybeRobot = parsePlace("PLACE 1,2,NORTH")
-      maybeRobot.isDefined should ===(true)
-      maybeRobot foreach (robot => {
-        robot.position should ===(Position(1, 2))
-        robot.direction should ===(North)
-      })
+      
+      forAll (validPositionGen, validPositionGen, directionGen) { (x: Int, y: Int, direction: Direction) =>
+        val maybeRobot = parsePlace(s"PLACE $x,$y,${direction.toString.toUpperCase}")
+        maybeRobot.isDefined should ===(true)
+        maybeRobot foreach (robot => {
+          robot.position should ===(Position(x, y))
+          robot.direction should ===(direction)
+        })
+      }
     }
 
     it("should return None for invalid Position") {
@@ -56,8 +64,6 @@ class ParserSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with
 
     it("should return Some Direction") {
 
-      implicit val genDirection: Arbitrary[Direction] = Arbitrary(Gen.oneOf(Seq(North, South, East, West)))
-
       forAll { (direction: Direction) =>
         val directionAsString = direction.toString.toUpperCase
         parseDirection(directionAsString) should ===(Some(direction))
@@ -74,17 +80,17 @@ class ParserSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with
   describe("parsePosition") {
 
     it("should return Some Position") {
-      val zeroToFour = for (n <- Gen.choose(0, 4)) yield n
-
-      forAll(zeroToFour, zeroToFour) { (x: Int, y: Int) =>
+      forAll(validPositionGen, validPositionGen) { (x: Int, y: Int) =>
         val maybePosition = parsePosition(x.toString, y.toString)
         maybePosition should ===(Some(Position(x, y)))
       }
     }
 
     it("should return None if not a valid Position") {
-      val maybePosition = parsePosition("5", "5")
-      maybePosition should ===(None)
+      forAll(invalidPositionGen, invalidPositionGen) { (x: Int, y: Int) =>
+        val maybePosition = parsePosition(x.toString, y.toString)
+        maybePosition should ===(None)
+      }
     }
 
     it("should return None if X cannot be converted to Int") {

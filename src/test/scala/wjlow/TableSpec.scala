@@ -9,34 +9,33 @@ import wjlow.Table._
 
 class TableSpec extends FunSpec with TypeCheckedTripleEquals with Matchers with PropertyChecks {
 
+  val validPositionGen = Gen.choose(0, 4)
+  val invalidPositionGen = Gen.oneOf(Gen.choose(5, 100), Gen.negNum[Int])
+
   describe("isValidPosition") {
 
     it("should return True for valid Position") {
-      val zeroToFour = for (n <- Gen.choose(0, 4)) yield n
-
-      forAll(zeroToFour, zeroToFour) { (x: Int, y: Int) =>
+      forAll(validPositionGen, validPositionGen) { (x: Int, y: Int) =>
         isValidPosition(Position(x, y)) should ===(true)
       }
     }
 
     it("should return False for invalid X") {
-      val zeroToFour = for (n <- Gen.choose(0, 4)) yield n
-
-      forAll(zeroToFour) { (y: Int) =>
-        isValidPosition(Position(5, y)) should ===(false)
+      forAll(invalidPositionGen, validPositionGen) { (invalidX: Int, y: Int) =>
+        isValidPosition(Position(invalidX, y)) should ===(false)
       }
     }
 
     it("should return False for invalid Y") {
-      val zeroToFour = for (n <- Gen.choose(0, 4)) yield n
-
-      forAll(zeroToFour) { (x: Int) =>
-        isValidPosition(Position(x, 5)) should ===(false)
+      forAll(validPositionGen, invalidPositionGen) { (x: Int, invalidY: Int) =>
+        isValidPosition(Position(x, invalidY)) should ===(false)
       }
     }
 
     it("should return False for invalid X and Y") {
-      isValidPosition(Position(5, 5)) should ===(false)
+      forAll(invalidPositionGen, invalidPositionGen) { (invalidX: Int, invalidY: Int) =>
+        isValidPosition(Position(invalidX, invalidY)) should ===(false)
+      }
     }
 
   }
