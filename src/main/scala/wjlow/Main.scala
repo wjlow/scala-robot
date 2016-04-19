@@ -11,15 +11,10 @@ object Main {
   def main(args: Array[String]): Unit = {
     if (args.length > 0) {
 
-      var currentRobot = None: Option[ToyRobot]
-      var currentCommands = Nil: Seq[ToyRobot => ToyRobot]
-
-      for (line <- io.Source.fromFile(args(0)).getLines()) {
-        val programState = robotProgram(line)(ProgramState(currentRobot, currentCommands, None))
-        currentRobot = programState.robot
-        currentCommands = programState.commands
-        programState.outputToPrint foreach println
-      }
+      val robotPrograms = io.Source.fromFile(args(0)).getLines() map (line => robotProgram(line)(_))
+      val programStates = (robotPrograms scanLeft ProgramState(None, Nil, None))((state, f) => f(state))
+      val outputToPrint = programStates filter (_.outputToPrint.isDefined) map (_.outputToPrint.get)
+      outputToPrint foreach println
 
     } else println("Example usage: sbt \"run src/main/resources/input1.txt\"")
   }
