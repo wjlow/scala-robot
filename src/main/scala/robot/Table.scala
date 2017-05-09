@@ -1,6 +1,6 @@
-package wjlow
+package robot
 
-import wjlow.Robot.Position
+import robot.Robot.Position
 
 object Table {
 
