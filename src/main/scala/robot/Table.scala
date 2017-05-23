@@ -1,6 +1,6 @@
 package robot
 
-import robot.Robot.Position
+import robot.models.Position
 
 object Table {
 

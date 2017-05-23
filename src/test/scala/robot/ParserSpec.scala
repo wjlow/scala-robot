@@ -16,7 +16,7 @@
 //
 //  describe("parsePlace") {
 //
-//    it("should return ToyRobot for valid PLACE command") {
+//    it("should return Robot for valid PLACE command") {
 //
 //      forAll (validPositionGen, validPositionGen, directionGen) { (x: Int, y: Int, direction: Direction) =>
 //        val maybeRobot = parsePlace(s"PLACE $x,$y,${direction.toString.toUpperCase}")
@@ -107,60 +107,60 @@
 //
 //  describe("parseCommand") {
 //
-//    it("should convert valid input to Move Command that can be applied to a ToyRobot") {
-//      val oldRobot = ToyRobot(Position(0, 0), North)
+//    it("should convert valid input to Move Command that can be applied to a Robot") {
+//      val oldRobot = Robot(Position(0, 0), North)
 //      val newRobot = parseCommand("MOVE")(oldRobot)
 //      newRobot.position should ===(Position(0, 1))
 //      newRobot.direction should ===(North)
 //    }
 //
-//    it("should convert valid input to Left Command that can be applied to a ToyRobot") {
-//      val oldRobot = ToyRobot(Position(0, 0), North)
+//    it("should convert valid input to Left Command that can be applied to a Robot") {
+//      val oldRobot = Robot(Position(0, 0), North)
 //      val newRobot = parseCommand("LEFT")(oldRobot)
 //      newRobot.position should ===(Position(0, 0))
 //      newRobot.direction should ===(West)
 //    }
 //
-//    it("should convert valid input to Right Command that can be applied to a ToyRobot") {
-//      val oldRobot = ToyRobot(Position(0, 0), North)
+//    it("should convert valid input to Right Command that can be applied to a Robot") {
+//      val oldRobot = Robot(Position(0, 0), North)
 //      val newRobot = parseCommand("RIGHT")(oldRobot)
 //      newRobot.position should ===(Position(0, 0))
 //      newRobot.direction should ===(East)
 //    }
 //
-//    it("should convert valid input to Place Command that can be applied to a ToyRobot") {
-//      val oldRobot = ToyRobot(Position(0, 0), North)
+//    it("should convert valid input to Place Command that can be applied to a Robot") {
+//      val oldRobot = Robot(Position(0, 0), North)
 //      val newRobot = parseCommand("PLACE 1,2,SOUTH")(oldRobot)
 //      newRobot.position should ===(Position(1, 2))
 //      newRobot.direction should ===(South)
 //    }
 //
-//    it("should convert Report Command to Identity Command that does nothing to a ToyRobot") {
-//      val oldRobot = ToyRobot(Position(0, 0), North)
+//    it("should convert Report Command to Identity Command that does nothing to a Robot") {
+//      val oldRobot = Robot(Position(0, 0), North)
 //      val newRobot = parseCommand("REPORT")(oldRobot)
 //      newRobot should ===(oldRobot)
 //    }
 //
-//    it("should convert Place Command with invalid Position to Identity Command that does nothing to a ToyRobot") {
-//      val oldRobot = ToyRobot(Position(0, 0), North)
+//    it("should convert Place Command with invalid Position to Identity Command that does nothing to a Robot") {
+//      val oldRobot = Robot(Position(0, 0), North)
 //      val newRobot = parseCommand("PLACE X,Y,SOUTH")(oldRobot)
 //      newRobot should ===(oldRobot)
 //    }
 //
-//    it("should convert Place Command with invalid Direction to Identity Command that does nothing to a ToyRobot") {
-//      val oldRobot = ToyRobot(Position(0, 0), North)
+//    it("should convert Place Command with invalid Direction to Identity Command that does nothing to a Robot") {
+//      val oldRobot = Robot(Position(0, 0), North)
 //      val newRobot = parseCommand("PLACE 1,2,INVALID")(oldRobot)
 //      newRobot should ===(oldRobot)
 //    }
 //
-//    it("should convert unknown Command to Identity Command that does nothing to a ToyRobot") {
-//      val oldRobot = ToyRobot(Position(0, 0), North)
+//    it("should convert unknown Command to Identity Command that does nothing to a Robot") {
+//      val oldRobot = Robot(Position(0, 0), North)
 //      val newRobot = parseCommand("UNKNOWN COMMAND")(oldRobot)
 //      newRobot should ===(oldRobot)
 //    }
 //
-//    it("should convert blank Command to Identity Command that does nothing to a ToyRobot") {
-//      val oldRobot = ToyRobot(Position(0, 0), North)
+//    it("should convert blank Command to Identity Command that does nothing to a Robot") {
+//      val oldRobot = Robot(Position(0, 0), North)
 //      val newRobot = parseCommand(" ")(oldRobot)
 //      newRobot should ===(oldRobot)
 //    }

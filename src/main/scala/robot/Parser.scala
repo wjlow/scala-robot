@@ -1,18 +1,16 @@
 package robot
 
-import robot.Commands._
-import robot.Robot._
 import org.atnos.eff._
-import cats.syntax.all._
+import robot.Commands._
+import robot.models._
+import robot.models.effects._
 
 import scala.util.Try
 
 object Parser {
 
-  case class PositionDirection(position: Position, direction: Direction)
-
-  def parsePlace[R: _err](line: String): Eff[R, ToyRobot] = {
-    parsePositionDirection(line) map (positionDirection => ToyRobot(positionDirection.position, positionDirection.direction))
+  def parsePlace[R: _err](line: String): Eff[R, Robot] = {
+    parsePositionDirection(line) map (positionDirection => Robot(positionDirection.position, positionDirection.direction))
   }
 
   def parseDirection[R: _err](direction: String): Eff[R, Direction] = {
@@ -39,7 +37,7 @@ object Parser {
       case "REPORT" => report[R]()
       case str => for {
         posDir <- parsePositionDirection[R](str)
-        _ <- place[R](ToyRobot(posDir.position, posDir.direction))
+        _ <- place[R](Robot(posDir.position, posDir.direction))
       } yield ()
     }
 
