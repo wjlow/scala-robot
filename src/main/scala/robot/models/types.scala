@@ -1,6 +1,7 @@
 package robot.models
 
 import cats._
+import cats.syntax.show
 
 case class Position(x: Int, y: Int) {
   override def toString = s"$x,$y"
@@ -16,7 +17,9 @@ case object East extends Direction("EAST")
 
 case object West extends Direction("WEST")
 
-case class PositionDirection(position: Position, direction: Direction)
+case class PositionDirection(position: Position, direction: Direction) {
+  def toRobot: Robot = Robot(position, direction)
+}
 
 case class Robot(position: Position, direction: Direction)
 
