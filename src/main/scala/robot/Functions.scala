@@ -1,10 +1,9 @@
 package robot
 
-import cats.data.{OptionT, Writer, WriterT}
-import cats._
-import cats.syntax.show._
-import robot.models._
+import cats.data.WriterT
 import cats.instances.all._
+import cats.syntax.all._
+import robot.models._
 
 object Functions {
 
@@ -41,7 +40,7 @@ object Functions {
     }
 
   def left: RobotRunner =
-    right ~> right ~> right
+    right |+| right |+| right
 
   def place(nextRobot: Robot): RobotRunner =
     RobotRunner { transformer =>

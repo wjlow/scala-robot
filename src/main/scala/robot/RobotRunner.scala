@@ -1,14 +1,14 @@
 package robot
 
-import cats.{Monoid, Semigroup}
 import cats.data._
+import cats.{Monoid, Show}
 import robot.models.Robot
 
 case class ReportAction(msg: String)
 
 object ReportAction {
 
-  implicit def monoid: Monoid[ReportAction] = new Monoid[ReportAction] {
+  implicit val monoid: Monoid[ReportAction] = new Monoid[ReportAction] {
     override def empty: ReportAction =
       ReportAction("")
 
@@ -20,13 +20,19 @@ object ReportAction {
       }
   }
 
+  implicit val show: Show[ReportAction] = (f: ReportAction) => f.msg
+
 }
 
-case class RobotRunner(run: WriterT[Option, ReportAction, Robot] => WriterT[Option, ReportAction, Robot]) {
-  def ~>(other: RobotRunner): RobotRunner =
-    RobotRunner(run andThen other.run)
-}
+case class RobotRunner(run: WriterT[Option, ReportAction, Robot] => WriterT[Option, ReportAction, Robot])
 
 object RobotRunner {
   def id: RobotRunner = new RobotRunner(identity)
+
+  implicit val monoid: Monoid[RobotRunner] = new Monoid[RobotRunner] {
+    override def empty: RobotRunner = RobotRunner(identity)
+
+    override def combine(x: RobotRunner, y: RobotRunner): RobotRunner =
+      RobotRunner(x.run andThen y.run)
+  }
 }
