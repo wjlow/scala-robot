@@ -1,13 +1,12 @@
 package robot
 
 import robot.models._
-import robot.models.effects._
 
 import scala.util.Try
 
 object Parser {
 
-  def parseDirection[R: _err](direction: String): Option[Direction] = {
+  def parseDirection(direction: String): Option[Direction] = {
     direction match {
       case "NORTH" => Option(North)
       case "SOUTH" => Option(South)
