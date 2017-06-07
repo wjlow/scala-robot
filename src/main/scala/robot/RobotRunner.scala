@@ -27,7 +27,6 @@ object ReportAction {
 case class RobotRunner(run: WriterT[Option, ReportAction, Robot] => WriterT[Option, ReportAction, Robot])
 
 object RobotRunner {
-  def id: RobotRunner = new RobotRunner(identity)
 
   implicit val monoid: Monoid[RobotRunner] = new Monoid[RobotRunner] {
     override def empty: RobotRunner = RobotRunner(identity)
@@ -35,4 +34,5 @@ object RobotRunner {
     override def combine(x: RobotRunner, y: RobotRunner): RobotRunner =
       RobotRunner(x.run andThen y.run)
   }
+
 }

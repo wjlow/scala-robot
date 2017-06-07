@@ -1,5 +1,6 @@
 package robot
 
+import cats.Monoid
 import robot.models._
 
 import scala.util.Try
@@ -22,13 +23,13 @@ object Parser {
       case Left(err) => None
     }
 
-  def parseCommand(command: String): RobotRunner =
+  def parseCommand(command: String)(implicit m: Monoid[RobotRunner]): RobotRunner =
     command match {
       case "MOVE" => Functions.move
       case "LEFT" => Functions.left
       case "RIGHT" => Functions.right
       case "REPORT" => Functions.report
-      case str => parsePositionDirection(str) map (posDir => Functions.place(posDir.toRobot)) getOrElse RobotRunner.id
+      case str => parsePositionDirection(str) map (posDir => Functions.place(posDir.toRobot)) getOrElse m.empty
     }
 
   private def parsePositionDirection(line: String): Option[PositionDirection] = {
