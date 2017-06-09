@@ -24,7 +24,7 @@ object ReportAction {
 
 }
 
-case class RobotRunner(run: WriterT[Option, ReportAction, Robot] => WriterT[Option, ReportAction, Robot])
+case class RobotRunner(run: Option[Robot] => Option[Robot])
 
 object RobotRunner {
 

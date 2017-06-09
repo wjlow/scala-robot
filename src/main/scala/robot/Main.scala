@@ -13,8 +13,8 @@ object Main {
     if (args.length > 0) {
       val commands = io.Source.fromFile(args(0)).getLines() map Parser.parseCommand
       val oneBigCommand = Monoid[RobotRunner].combineAll(commands)
-      val initialRobot = WriterT.lift[Option, ReportAction, Robot](Option.empty[Robot])
-      oneBigCommand.run(initialRobot).run.map(_._1.show).foreach(println)
+      val initialRobot = Option.empty[Robot]
+      oneBigCommand.run(initialRobot)
     } else println("Example usage: sbt \"run src/main/resources/input1.txt\"")
   }
 }

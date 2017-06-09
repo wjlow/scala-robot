@@ -43,17 +43,16 @@ object Functions {
     right |+| right |+| right
 
   def place(nextRobot: Robot): RobotRunner =
-    RobotRunner { transformer =>
-      val optRobot = transformer.run.map(_._2)
-      if (Table.isValidPosition(nextRobot.position)) WriterT.lift[Option, ReportAction, Robot](Option(nextRobot))
-      else WriterT.lift[Option, ReportAction, Robot](optRobot)
+    RobotRunner { optRobot =>
+      if (Table.isValidPosition(nextRobot.position)) Option(nextRobot)
+      else optRobot
     }
 
 
   def report: RobotRunner =
     RobotRunner {
-      transformer =>
-        val toPrint: String = transformer.value.map(_.show).getOrElse("")
-        transformer.tell(ReportAction(toPrint))
+      optRobot =>
+        optRobot map (_.show) foreach println
+        optRobot
     }
 }
