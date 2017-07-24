@@ -1,15 +1,17 @@
 package robot
 
-import cats.data.WriterT
-import cats.instances.all._
-import cats.syntax.all._
+import cats._
+import cats.data.Writer
+import cats.implicits._
 import robot.models._
 
 object Functions {
 
+  val WriterOptionFunctor = Functor[Writer[ReportAction, ?]].compose[Option]
+
   def move: RobotRunner =
-    RobotRunner {
-      _ map { robot =>
+    RobotRunner { writerOptRobot =>
+      WriterOptionFunctor.map(writerOptRobot) { robot =>
         val position = robot.position
         val direction = robot.direction
 
@@ -26,8 +28,8 @@ object Functions {
     }
 
   def right: RobotRunner =
-    RobotRunner {
-      _ map { robot =>
+    RobotRunner { writerOptRobot =>
+      WriterOptionFunctor.map(writerOptRobot) { robot =>
         val nextDirection = robot.direction match {
           case North => East
           case East => South
@@ -43,17 +45,17 @@ object Functions {
     right |+| right |+| right
 
   def place(nextRobot: Robot): RobotRunner =
-    RobotRunner { transformer =>
-      val optRobot = transformer.run.map(_._2)
-      if (Table.isValidPosition(nextRobot.position)) WriterT.lift[Option, ReportAction, Robot](Option(nextRobot))
-      else WriterT.lift[Option, ReportAction, Robot](optRobot)
+    RobotRunner { writerOptRobot =>
+      writerOptRobot.map { optRobot =>
+        if (Table.isValidPosition(nextRobot.position)) Option(nextRobot)
+        else optRobot
+      }
     }
-
 
   def report: RobotRunner =
     RobotRunner {
-      transformer =>
-        val toPrint: String = transformer.value.map(_.show).getOrElse("")
-        transformer.tell(ReportAction(toPrint))
+      writerOptRobot =>
+        val toPrint = ReportAction(writerOptRobot.value.map(_.show).getOrElse(""))
+        writerOptRobot.tell(toPrint)
     }
 }

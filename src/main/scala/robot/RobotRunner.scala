@@ -1,7 +1,7 @@
 package robot
 
 import cats.data._
-import cats.{Monoid, Show}
+import cats.{Functor, Monoid, Show}
 import robot.models.Robot
 
 case class ReportAction(msg: String)
@@ -24,7 +24,7 @@ object ReportAction {
 
 }
 
-case class RobotRunner(run: WriterT[Option, ReportAction, Robot] => WriterT[Option, ReportAction, Robot])
+case class RobotRunner(run: Writer[ReportAction, Option[Robot]] => Writer[ReportAction, Option[Robot]])
 
 object RobotRunner {
 
