@@ -1,6 +1,7 @@
 package robot.models
 
 import cats._
+import cats.data.Writer
 import cats.syntax.show
 
 case class Position(x: Int, y: Int) {
@@ -24,8 +25,11 @@ case class PositionDirection(position: Position, direction: Direction) {
 case class Robot(position: Position, direction: Direction)
 
 object Robot {
-  implicit val RobotShow: Show[Robot] =
+  implicit val show: Show[Robot] =
     (robot: Robot) => s"${robot.position.x},${robot.position.y},${robot.direction.name.toUpperCase}"
+
+  val initial: Writer[ReportAction, Option[Robot]] =
+    Writer.value(Option.empty[Robot])(ReportAction.monoid)
 }
 
 sealed trait AppError
