@@ -55,7 +55,7 @@ object Functions {
   def report: RobotRunner =
     RobotRunner {
       writerOptRobot =>
-        val toPrint = ReportAction(writerOptRobot.value.map(_.show).getOrElse(""))
-        writerOptRobot.tell(toPrint)
+        val report = ReportAction(writerOptRobot.value.map(_.show).orEmpty)
+        writerOptRobot.tell(report)
     }
 }
