@@ -14,9 +14,7 @@ object ScalaCheckUtils {
     } yield Robot(pos, dir)
 
   val genReportAction: Gen[ReportAction] =
-    for {
-      str <- Gen.alphaStr
-    } yield ReportAction(str)
+    Gen.alphaStr.map(ReportAction.apply)
 
   val genWriterOptRobot: Gen[Writer[ReportAction, Option[Robot]]] =
     for {
@@ -35,4 +33,6 @@ object ScalaCheckUtils {
   implicit val arbRobotRunner: Arbitrary[RobotRunner] = Arbitrary(genRobotRunner)
 
   implicit val arbWriterOptRobot: Arbitrary[Writer[ReportAction, Option[Robot]]] = Arbitrary(genWriterOptRobot)
+
+  implicit val arbReportAction: Arbitrary[ReportAction] = Arbitrary(genReportAction)
 }

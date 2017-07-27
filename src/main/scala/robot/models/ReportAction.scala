@@ -12,8 +12,8 @@ object ReportAction {
 
     override def combine(x: ReportAction, y: ReportAction): ReportAction =
       (x, y) match {
-        case (x, y) if x.msg.isEmpty => y
-        case (x, y) if y.msg.isEmpty => x
+        case (ReportAction(""), y) => y
+        case (x, ReportAction("")) => x
         case (x, y) => ReportAction(s"${x.msg}\n${y.msg}")
       }
   }
