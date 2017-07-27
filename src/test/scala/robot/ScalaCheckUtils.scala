@@ -30,6 +30,8 @@ object ScalaCheckUtils {
       f <- Gen.oneOf(Functions.left, Functions.right, Functions.move, Functions.report, Functions.place(next))
     } yield f
 
+  implicit val arbRobot: Arbitrary[Robot] = Arbitrary(genRobot)
+
   implicit val arbRobotRunner: Arbitrary[RobotRunner] = Arbitrary(genRobotRunner)
 
   implicit val arbWriterOptRobot: Arbitrary[Writer[ReportAction, Option[Robot]]] = Arbitrary(genWriterOptRobot)

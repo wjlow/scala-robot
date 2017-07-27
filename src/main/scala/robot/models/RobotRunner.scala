@@ -14,6 +14,6 @@ object RobotRunner {
       RobotRunner(x.run andThen y.run)
   }
 
-  val empty: RobotRunner = Monoid[RobotRunner].empty
+  val empty: RobotRunner = monoid.empty
 
 }

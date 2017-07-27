@@ -20,4 +20,6 @@ object ReportAction {
 
   implicit val show: Show[ReportAction] = (f: ReportAction) => f.msg
 
+  val empty: ReportAction = monoid.empty
+
 }
