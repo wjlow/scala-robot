@@ -5,16 +5,23 @@ import org.scalacheck.{Arbitrary, Gen}
 import robot.models._
 
 object ScalaCheckUtils {
+  val genDirection: Gen[Direction] = Gen.oneOf(North, South, East, West)
+
   val genRobot: Gen[Robot] =
     for {
       x <- Gen.choose(0, 4)
       y <- Gen.choose(0, 4)
       pos = Position(x, y)
-      dir <- Gen.oneOf(North, South, East, West)
+      dir <- genDirection
     } yield Robot(pos, dir)
 
   val genReportAction: Gen[ReportAction] =
-    Gen.alphaStr.map(ReportAction.apply)
+    for {
+      x <- Gen.chooseNum(0, 4)
+      y <- Gen.chooseNum(0, 4)
+      dir <- genDirection.map(_.name)
+      msg <- Gen.oneOf("", s"$x,$y $dir")
+    } yield ReportAction(msg)
 
   val genWriterOptRobot: Gen[Writer[ReportAction, Option[Robot]]] =
     for {
